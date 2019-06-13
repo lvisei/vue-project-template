@@ -1,0 +1,16 @@
+/node_modules/
+/dist/
+/build/
+/config/
+**/*.svg
+package.json
+.gitignore
+.npmignore
+.prettierignore
+.DS_Store
+.editorconfig
+.eslintignore
+**/*.yml
+.*.js
+*.config.js
+
