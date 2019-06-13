@@ -31,6 +31,7 @@ module.exports = merge(common, {
     port: config.dev.port,
     inline: true,
     overlay: true,
-    hot: true
+    hot: true,
+    proxy: config.dev.proxy
   }
 });

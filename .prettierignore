@@ -1,7 +1,7 @@
 /node_modules/
 /dist/
-/build/
-/config/
+# /build/
+# /config/
 **/*.svg
 package.json
 .gitignore
