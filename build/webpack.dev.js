@@ -1,18 +1,20 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const merge = require('webpack-merge');
-const webpack = require('webpack');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const merge = require('webpack-merge')
+const webpack = require('webpack')
 
-const common = require('./webpack.base.js');
-const config = require('../config');
+const common = require('./webpack.base.js')
+const config = require('../config')
 
 module.exports = merge(common, {
   mode: 'development',
   module: {
-    rules: [{
-      test: /\.css$/,
-      use: ['vue-style-loader', 'style-loader', 'css-loader', 'postcss-loader']
-    }]
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['vue-style-loader', { loader: 'css-loader', options: { importLoaders: 2 } }, 'postcss-loader']
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -34,4 +36,4 @@ module.exports = merge(common, {
     hot: true,
     proxy: config.dev.proxy
   }
-});
+})

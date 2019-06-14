@@ -1,30 +1,40 @@
-const path = require('path');
-const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const merge = require('webpack-merge');
+const path = require('path')
+const webpack = require('webpack')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin')
+const merge = require('webpack-merge')
 
-const common = require('./webpack.base.js');
-const config = require('../config');
-const utils = require('./utils');
+const common = require('./webpack.base.js')
+const config = require('../config')
+const utils = require('./utils')
 
 const webpackConfig = merge(common, {
   output: {
     filename: 'js/[name].[chunkhash].js'
   },
   mode: 'production',
-  devtool: 'source-map',
+  devtool: config.build.jsSourceMap ? 'source-map' : false,
   module: {
-    rules: [{
-      test: /\.css$/,
-      use: [
-        { loader: MiniCssExtractPlugin.loader },
-        { loader: 'css-loader', options: { importLoaders: 1 } },
-        'postcss-loader'
-      ]
-    }]
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it uses publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          { loader: 'css-loader', options: { importLoaders: 2 } },
+          'postcss-loader'
+        ]
+      }
+    ]
   },
   optimization: {
     splitChunks: {
@@ -56,13 +66,20 @@ const webpackConfig = merge(common, {
         // @reference: https://github.com/kangax/html-minifier#options-quick-reference
       }
     }),
-    new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash].css' }),
+    new MiniCssExtractPlugin({ filename: utils.assetsPath('css/[name].[contenthash].css') }),
+    new OptimizeCssnanoPlugin({
+      sourceMap: config.build.cssSourceMap,
+      cssnanoOptions: {
+        // https://cssnano.co/guides/optimisations
+        preset: ['default', { mergeLonghand: false }]
+      }
+    }),
     new webpack.HashedModuleIdsPlugin()
   ]
-});
+})
 
 if (config.build.bundleAnalyzerReport) {
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

@@ -1,15 +1,17 @@
 const path = require('path');
 
-// You can specify a specific path prefix based on your deployment.
-const STATIC_PATH = '/'; // Example: 'https://your-domain-name/'
-const publicPathPrefix = process.env.NODE_ENV === 'production' ? STATIC_PATH : '/';
-
 module.exports = {
   build: {
     env: require('./prod.env'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'assets',
-    assetsPublicPath: publicPathPrefix,
+    // Assets folder Directory
+    assetsSubDirectory: '',
+    // You can specify a specific path prefix based on your deployment.
+    // Example: 'https://your-domain-name/'
+    assetsPublicPath: './',
+    jsSourceMap: true,
+    // (https://github.com/webpack/css-loader#sourcemaps)
+    cssSourceMap: false,
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
@@ -20,8 +22,17 @@ module.exports = {
     env: require('./dev.env'),
     port: 8100,
     autoOpenBrowser: true,
-    assetsSubDirectory: 'assets',
+    // Assets folder Directory
+    assetsSubDirectory: '',
     assetsPublicPath: '/',
-    proxy: {}
+    proxy: {
+      '/api': {
+        target: 'https://api.douban.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/v2'
+        }
+      }
+    }
   }
 };

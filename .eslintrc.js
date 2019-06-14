@@ -9,7 +9,7 @@ module.exports = {
     node: true,
     browser: true
   },
-  extends: ['eslint:recommended', 'plugin:vue/recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'plugin:vue/recommended', 'prettier', 'prettier/vue'],
   plugins: ['vue', 'prettier'],
   rules: {
     'prettier/prettier': 'warn',

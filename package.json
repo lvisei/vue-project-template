@@ -9,8 +9,9 @@
     "start": "webpack-dev-server --config build/server",
     "build": "webpack --config build/build",
     "build:r": "npm run build --report",
-    "eslint": "eslint --fix --ext .js,.vue src",
-    "prettier": "prettier -c --write 'src/**/*'",
+    "lint": "eslint --ext .js,.vue src",
+    "lint-fix": "eslint --fix --ext .js,.vue src",
+    "prettier": "prettier -c --write 'src/**/*.{js,vue}'",
     "precommit": "lint-staged"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
+    "@intervolga/optimize-cssnano-plugin": "^1.0.6",
     "autoprefixer": "^9.6.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
@@ -33,6 +35,7 @@
     "eslint-plugin-html": "^5.0.5",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-vue": "^5.2.2",
+    "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.4.1",
     "less": "^3.9.0",
@@ -43,7 +46,6 @@
     "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
     "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.1",
     "url-loader": "^2.0.0",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
@@ -59,12 +61,12 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,md,vue,css,less,scss}": [
-      "prettier --write",
-      "git add"
-    ],
     "src/**/*.{js,jsx,ts,tsx,vue}": [
       "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{js,jsx,ts,tsx,json,css,md,vue,css,less,scss}": [
+      "prettier --write",
       "git add"
     ]
   },
