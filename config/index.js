@@ -25,14 +25,13 @@ module.exports = {
     // Assets folder Directory
     assetsSubDirectory: '',
     assetsPublicPath: '/',
-    proxy: {
-      '/api': {
-        target: 'https://api.douban.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/v2'
-        }
-      }
-    }
+    proxy: {}
+    // '/api': {
+    //   target: 'https://api.douban.com',
+    //   changeOrigin: true,
+    //   pathRewrite: {
+    //     '^/api': '/v2'
+    //   }
+    // }
   }
 };

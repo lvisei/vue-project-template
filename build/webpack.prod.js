@@ -1,15 +1,15 @@
-const path = require('path')
-const webpack = require('webpack')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin')
-const merge = require('webpack-merge')
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
+const merge = require('webpack-merge');
 
-const common = require('./webpack.base.js')
-const config = require('../config')
-const utils = require('./utils')
+const common = require('./webpack.base.js');
+const config = require('../config');
+const utils = require('./utils');
 
 const webpackConfig = merge(common, {
   output: {
@@ -17,25 +17,6 @@ const webpackConfig = merge(common, {
   },
   mode: 'production',
   devtool: config.build.jsSourceMap ? 'source-map' : false,
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // you can specify a publicPath here
-              // by default it uses publicPath in webpackOptions.output
-              publicPath: '../'
-            }
-          },
-          { loader: 'css-loader', options: { importLoaders: 2 } },
-          'postcss-loader'
-        ]
-      }
-    ]
-  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -58,7 +39,7 @@ const webpackConfig = merge(common, {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
-      // favicon: 'public/favicon.ico'
+      favicon: 'public/favicon.ico',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -76,10 +57,10 @@ const webpackConfig = merge(common, {
     }),
     new webpack.HashedModuleIdsPlugin()
   ]
-})
+});
 
 if (config.build.bundleAnalyzerReport) {
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
-module.exports = webpackConfig
+module.exports = webpackConfig;

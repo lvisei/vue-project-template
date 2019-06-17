@@ -1,16 +1,33 @@
-const path = require('path')
-const webpack = require('webpack')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const config = require('../config')
-const utils = require('./utils')
+const config = require('../config');
+const utils = require('./utils');
 
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV;
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir)
-}
+const resolve = dir => path.join(__dirname, '..', dir);
+
+const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions) => {
+  const loaders = [
+    process.env.NODE_ENV === 'development'
+      ? 'vue-style-loader'
+      : { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
+    ,
+    { loader: 'css-loader', options: cssOptions },
+    { loader: 'postcss-loader' }
+  ].filter(Boolean);
+  if (preProcessor) {
+    loaders.push({
+      loader: preProcessor,
+      options: Object.assign({}, preProcessorOptions ? preProcessorOptions : undefined)
+    });
+  }
+
+  return loaders;
+};
 
 const baseConfig = {
   entry: resolve('src/main.js'),
@@ -48,55 +65,20 @@ const baseConfig = {
         loader: 'babel-loader'
       },
       {
+        test: /\.css$/,
+        use: getStyleLoaders({ importLoaders: 2 })
+      },
+      {
         test: /\.less$/,
-        use:
-          env === 'production'
-            ? [
-                { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                'less-loader'
-              ]
-            : [
-                'vue-style-loader',
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                'less-loader'
-              ]
+        use: getStyleLoaders({ importLoaders: 2 }, 'less-loader')
       },
       {
         test: /\.scss$/,
-        use:
-          env === 'production'
-            ? [
-                { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                'sass-loader'
-              ]
-            : [
-                'vue-style-loader',
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                'sass-loader'
-              ]
+        use: getStyleLoaders({ importLoaders: 2 }, 'sass-loader')
       },
       {
         test: /\.sass$/,
-        use:
-          env === 'production'
-            ? [
-                { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } },
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                { loader: 'sass-loader', options: { indentedSyntax: true } }
-              ]
-            : [
-                'vue-style-loader',
-                { loader: 'css-loader', options: { importLoaders: 2 } },
-                'postcss-loader',
-                { loader: 'sass-loader', options: { indentedSyntax: true } }
-              ]
+        use: getStyleLoaders({ importLoaders: 2 }, 'sass-loader', { indentedSyntax: true })
       },
       {
         test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
@@ -163,6 +145,6 @@ const baseConfig = {
     ]
   },
   plugins: [new webpack.ProgressPlugin(), new VueLoaderPlugin()]
-}
+};
 
-module.exports = baseConfig
+module.exports = baseConfig;
