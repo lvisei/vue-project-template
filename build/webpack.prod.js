@@ -13,7 +13,8 @@ const utils = require('./utils');
 
 const webpackConfig = merge(common, {
   output: {
-    filename: 'js/[name].[chunkhash].js'
+    filename: 'js/[name].[chunkhash].js',
+    chunkFilename: 'js/[name]_[chunkhash].js' // 非入口打包出的文件名称
   },
   mode: 'production',
   devtool: config.build.jsSourceMap ? 'source-map' : false,

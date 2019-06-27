@@ -32,9 +32,9 @@ const getStyleLoaders = (cssOptions, preProcessor, preProcessorOptions) => {
 const baseConfig = {
   entry: resolve('src/main.js'),
   output: {
-    path: config.build.assetsRoot,
-    filename: 'js/[name].[hash].js',
-    publicPath: env === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath
+    path: config.build.assetsRoot, // 输出文件的绝对路径
+    filename: 'js/[name].[hash].js', // 输出文件的文件
+    publicPath: env === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath // 文件中静态资源的引用路径
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
