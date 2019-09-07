@@ -1,5 +1,5 @@
 <template>
-  <h1>This is B components</h1>
+  <h1 class="b">This is <span class="b__title">B</span> components</h1>
 </template>
 
 <script>
@@ -36,4 +36,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="less">
+.b {
+  &__title {
+    color: blue;
+  }
+}
+</style>
