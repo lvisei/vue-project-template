@@ -32,7 +32,7 @@ export default {
 
   destroyed() {},
 
-  methods: {}
+  methods: {},
 };
 </script>
 

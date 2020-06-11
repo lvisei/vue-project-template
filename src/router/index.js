@@ -12,12 +12,12 @@ export default new Router({
     {
       path: '/',
       component: A,
-      name: 'a'
+      name: 'a',
     },
     {
       path: '/b',
       component: B,
-      name: 'b'
-    }
-  ]
+      name: 'b',
+    },
+  ],
 });
